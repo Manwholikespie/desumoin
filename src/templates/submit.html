@@ -4,16 +4,17 @@
 <head>
   <title></title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="stylesheet" href="https://unpkg.com/tachyons/css/tachyons.min.css">
 </head>
 
-<body class="ma3">
-  <h1>Submit a quote.</h1>
+<body class="ma3 bg-near-white georgia">
+  <a href="/" class="f1 logo">DesuMoin</a>
 
   <div id="app">
     <!-- authors, text, context, tags, featuring -->
-    <div class="mb3">
-      <legend>Authors</legend>
+    <div class="mv3">
+      <legend>Authors (comma delim.)</legend>
       <input placeholder="Ryan" v-model="authors">
     </div>
 
@@ -29,8 +30,16 @@
 
     <div class="mb3">
       <legend>Preview:</legend>
-      <p style="white-space: pre;">[[ preview ]]</p>
+      <p class="pa3 bg-white" style="white-space: pre-wrap;">[[ preview ]]</p>
     </div>
+
+    <!-- <div class="mb3">
+      <legend>Data:</legend>
+      <pre class="pa3 bg-black red textwrap">[[ submit_data ]]</pre>
+    </div> -->
+
+    <input type="submit" v-on:click="submit">
+
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

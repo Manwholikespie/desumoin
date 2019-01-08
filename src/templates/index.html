@@ -4,17 +4,22 @@
 <head>
   <title></title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="stylesheet" href="https://unpkg.com/tachyons/css/tachyons.min.css">
 </head>
 
-<body>
+<body class="ma3 bg-near-white georgia">
+  <a href="/" class="f1 logo">DesuMoin</a>
+  <a class="f3 ml2 no-underline logo2" href="/submit">Submit a quote!</a>
+
   {% if authors %}
-  <ul>
+  <ul class="list">
     {% for author in authors %}
-    <li>{{ author }}</li>
+    <li class="mb2"><a href="{{ url_for('main.author', authorName=author) }}">{{ author|title }}</a></li>
     {% endfor %}
   </ul>
   {% endif %}
+
 </body>
 
 </html>
