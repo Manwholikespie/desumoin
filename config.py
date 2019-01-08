@@ -1,1 +1,2 @@
 LOG_FILE = "errors.log"
+TEMPLATES_AUTO_RELOAD = True
