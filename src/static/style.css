@@ -11,10 +11,11 @@
     text-decoration: none;
 }
 
-.logo2 {
+a {
     color: #827081;
+    text-decoration: none;
 }
 
-a {
-    color: blue;
+a:hover {
+    color: #70a8cc;
 }
