@@ -10,12 +10,18 @@ def list_authors():
     return sorted(db.quotes.distinct('authors'))
 
 
+def list_all_quotes():
+    """List all the quotes we have.
+    """
+    return reversed([*db.quotes.find({})])
+
+
 def find_quotes_by_author(authorName):
     """Finds all quotes by an author.
     """
-    return db.quotes.find({
+    return reversed([*db.quotes.find({
         'authors': authorName
-    })
+    })])
 
 
 def add_quote(authors, text, context):

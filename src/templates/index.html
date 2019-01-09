@@ -15,6 +15,7 @@
   {% if authors %}
   <div class="pv3">
     <ul class="list">
+      <li class="mb2 b"><a href="{{ url_for('main.all') }}">All</a></li>
       {% for author in authors %}
       <li class="mb2"><a href="{{ url_for('main.author', authorName=author) }}">{{
           author|title }}</a></li>
