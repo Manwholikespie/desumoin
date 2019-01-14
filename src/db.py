@@ -18,7 +18,7 @@ def list_authors():
             }
         }
     }
-    hits = es.search(index="desumoin", body=query)
+    hits = es.search(index="desumoin", body=query, size=10000)
     return [
         hit.get('key')
         for hit in
@@ -34,7 +34,7 @@ def list_all_quotes():
             "match_all": {}
         }
     }
-    hits = es.search(index="desumoin", body=query)
+    hits = es.search(index="desumoin", body=query, size=10000)
     return [
         hit.get('_source')
         for hit in
@@ -53,7 +53,7 @@ def find_quotes_by_author(authorName):
             }
         }
     }
-    hits = es.search(index="desumoin", body=query)
+    hits = es.search(index="desumoin", body=query, size=10000)
     return [
         hit.get('_source')
         for hit in
