@@ -1,27 +1,65 @@
-from pymongo import MongoClient
+from bson.objectid import ObjectId
 
-client = MongoClient('mongodb://localhost:27017')
-db = client.desumoin
+from elasticsearch import Elasticsearch
+
+es = Elasticsearch()
 
 
 def list_authors():
     """List the people we have quotations for.
     """
-    return sorted(db.quotes.distinct('authors'))
+    query = {
+        "size": 0,
+        "aggs": {
+            "uniq_authors": {
+                "terms": {
+                    "field": "authors.keyword"
+                }
+            }
+        }
+    }
+    hits = es.search(index="desumoin", body=query)
+    return [
+        hit.get('key')
+        for hit in
+        hits.get('aggregations', {}).get('uniq_authors', {}).get('buckets', [])
+    ]
 
 
 def list_all_quotes():
     """List all the quotes we have.
     """
-    return reversed([*db.quotes.find({})])
+    query = {
+        "query": {
+            "match_all": {}
+        }
+    }
+    hits = es.search(index="desumoin", body=query)
+    return [
+        hit.get('_source')
+        for hit in
+        sorted(hits.get('hits', {}).get('hits', []),
+               key=lambda x: x['_id'], reverse=True)
+    ]
 
 
 def find_quotes_by_author(authorName):
-    """Finds all quotes by an author.
+    """Finds all quotes by an author, returning them sorted by newest first.
     """
-    return reversed([*db.quotes.find({
-        'authors': authorName
-    })])
+    query = {
+        "query": {
+            "match": {
+                "authors": authorName
+            }
+        }
+    }
+    hits = es.search(index="desumoin", body=query)
+    return [
+        hit.get('_source')
+        for hit in
+        sorted(hits.get('hits', {}).get('hits', []),
+               key=lambda x: x['_id'], reverse=True)
+    ]
 
 
 def add_quote(authors, text, context):
@@ -34,8 +72,13 @@ def add_quote(authors, text, context):
     context : str
     """
     # TODO: Re-implement tags when we're ready.
-    return db.quotes.insert_one({
+    doc = {
         'authors': authors,
         'text': text,
         'context': context
-    })
+    }
+    response = es.index(index='desumoin',
+                        doc_type='quote',
+                        id=ObjectId(),
+                        body=doc)
+    return response.get('result')
