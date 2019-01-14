@@ -13,17 +13,18 @@ def list_authors():
         "aggs": {
             "uniq_authors": {
                 "terms": {
-                    "field": "authors.keyword"
+                    "field": "authors.keyword",
+                    "size": 10000
                 }
             }
         }
     }
     hits = es.search(index="desumoin", body=query, size=10000)
-    return [
+    return sorted([
         hit.get('key')
         for hit in
         hits.get('aggregations', {}).get('uniq_authors', {}).get('buckets', [])
-    ]
+    ])
 
 
 def list_all_quotes():
