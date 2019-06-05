@@ -95,3 +95,7 @@ def admin():
         # 'authors': db.list_authors()
     }
     return flask.render_template('admin.html', data=data)
+
+@bp.route('/robots.txt')
+def robots():
+    return flask.send_from_directory('static', 'robots.txt')
