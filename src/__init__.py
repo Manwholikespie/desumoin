@@ -4,6 +4,7 @@ import uuid
 import flask
 
 from src.extensions import assets
+from src.auth import auth_manager
 from src.views import register_views
 
 
@@ -36,6 +37,7 @@ def create_app(config):
     # TODO: Add boilerplate code for setting up a database.
 
     assets.init_app(app)
+    auth_manager.init_app(app)
     register_views(app)
 
     return app
